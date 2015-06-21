@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Concurrent;
 
 namespace TagStreamer.Models
 {
@@ -7,11 +8,14 @@ namespace TagStreamer.Models
 		public UserSession(string sessionId)
 		{
 			SessionId = sessionId;
-			UserSessionQueue = new Queue<FeedItem>();
+			UserSessionQueue = new ConcurrentQueue<FeedItem>();
+			CreationTime = DateTime.Now;
 		}
 
-		public Queue<FeedItem> UserSessionQueue { get; private set; }
+		public ConcurrentQueue<FeedItem> UserSessionQueue { get; private set; }
 
 		public string SessionId { get; private set; }
+
+		public DateTimeOffset CreationTime { get; private set; }
 	}
 }

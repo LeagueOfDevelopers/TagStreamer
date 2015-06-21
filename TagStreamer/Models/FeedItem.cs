@@ -1,4 +1,5 @@
-﻿using InstaSharp.Models;
+﻿using System;
+using InstaSharp.Models;
 
 namespace TagStreamer.Models
 {
@@ -7,9 +8,12 @@ namespace TagStreamer.Models
 		public FeedItem(Media instagramMedia)
 		{
 			InstagramItem = instagramMedia;
+			ItemId = Guid.NewGuid();
 		}
 
-		public FeedItemType ItemType { get; set; }
+		public Guid ItemId { get; private set; }
+
+		public FeedItemType ItemType { get; private set; }
 
 		public Media InstagramItem { get; private set; }
 

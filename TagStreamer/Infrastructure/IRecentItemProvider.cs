@@ -1,9 +1,10 @@
-﻿using TagStreamer.Models;
+﻿using System.Threading.Tasks;
+using TagStreamer.Models;
 
 namespace TagStreamer.Infrastructure
 {
 	public interface IRecentItemProvider
 	{
-		FeedItem GetRecentItem();
+		Task<FeedItem> GetRecentItemAsync();
 	}
 }

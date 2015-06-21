@@ -1,23 +1,41 @@
-﻿using System.Threading.Tasks;
-using System.Web.Http;
+﻿using System.Web.Http;
+using TagStreamer.Models;
 
 namespace TagStreamer.Controllers
 {
     public class UserController : ApiController
     {
-		[HttpGet]
-	    public Task<IHttpActionResult> Connect()
+	    public UserController(UserFeedItemService userFeedItemService)
 	    {
+		    _userFeedItemService = userFeedItemService;
+	    }
+
+	    [HttpGet]
+	    public IHttpActionResult Connect()
+	    {
+		    var sessionId = _userFeedItemService.CreateNewSession();
+		    return Ok(sessionId);
 	    }
 
 		[HttpGet]
-	    public Task<IHttpActionResult> NewPhoto(string connectionToken)
-	    {
-	    }
+	    public IHttpActionResult NewPhoto(string connectionToken)
+		{
+			var item = _userFeedItemService.GetNewItem(connectionToken);
+			if (item == null)
+			{
+				return NotFound();
+			}
+
+			return Ok(item);
+		}
 
 		[HttpGet]
-	    public Task<IHttpActionResult> Disconnect(string connectionToken)
-	    {
-	    }
+	    public IHttpActionResult Disconnect(string connectionToken)
+		{
+			_userFeedItemService.CloseSession(connectionToken);
+			return Ok();
+		}
+		
+		private readonly UserFeedItemService _userFeedItemService;
     }
 }
