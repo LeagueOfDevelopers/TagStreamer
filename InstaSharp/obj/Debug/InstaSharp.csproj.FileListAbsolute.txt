@@ -1,0 +1,2 @@
+C:\Users\Margelov.KL\Documents\Visual Studio 2013\Projects\TagStreamer\InstaSharp\obj\Debug\InstaSharp.csprojResolveAssemblyReference.cache
+C:\League of Developers\LODProject\TagStreamer\InstaSharp\obj\Debug\InstaSharp.csprojResolveAssemblyReference.cache

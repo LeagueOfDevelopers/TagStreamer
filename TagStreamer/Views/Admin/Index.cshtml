@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+@using (var form = Html.BeginForm())
+{
+    <p>@Html.Label("LoginLabel", "Логин")</p>
+    <p>@Html.TextBox("Login", "", new
+             {
+                 @style = "form-control"
+             })</p>
+    <p>@Html.Label("PasswordLabel", "Пароль")</p>
+    <p>@Html.Password("Password", "", new
+             {
+                 @style = "form-control"
+             })</p>
+    <input type="submit" value="Залогиниться" class="btn-primary"/>
+}
+
