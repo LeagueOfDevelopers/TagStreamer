@@ -97,6 +97,11 @@ namespace WpfApplication11
 
         private void bGood_Click(object sender, RoutedEventArgs e)
         {
+	        if (string.IsNullOrEmpty(_id))
+	        {
+		        return;
+	        }
+
             if (!Connection.ProcessedPhoto(_key, _id, true))
                 MessageBox.Show("Неполадки в соединении. Не удалось отправить сообщение.");
             else

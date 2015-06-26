@@ -3,7 +3,6 @@ using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
-using TagStreamer.Models;
 
 namespace WpfApplication11
 {
@@ -64,7 +63,7 @@ namespace WpfApplication11
 		{
 			try
 			{
-				var req = (HttpWebRequest) WebRequest.Create(string.Format("http://{3}/Admin/PhotoProcessed?connectionToken={0}&id={1}&accepted={2}", key, id, accepted, site));
+				var req = (HttpWebRequest) WebRequest.Create(string.Format("http://{3}/Admin/PhotoProcessed?connectionToken={0}&itemGuid={1}&accepted={2}", key, id, accepted, site));
 				var resp = (HttpWebResponse) req.GetResponse();
 				var sr = new StreamReader(resp.GetResponseStream(), Encoding.UTF8);
 				return true;
