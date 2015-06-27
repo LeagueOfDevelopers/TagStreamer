@@ -1,6 +1,7 @@
 ﻿using System;
 using InstaSharp.Models;
-using Tweetinvi.Core.Interfaces;
+using TagStream.Infrastructure;
+using Tweetinvi.Core.Interfaces.DTO;
 
 namespace TagStream.Models
 {
@@ -13,7 +14,7 @@ namespace TagStream.Models
 			ItemId = Guid.NewGuid();
 		}
 
-		public FeedItem(ITweet tweet)
+		public FeedItem(TweetItem tweet)
 		{
 			TwitterItem = tweet;
 			ItemType = FeedItemType.Twitter;
@@ -26,6 +27,6 @@ namespace TagStream.Models
 
 		public Media InstagramItem { get; private set; }
 
-		public ITweet TwitterItem { get; private set; }
+		public TweetItem TwitterItem { get; private set; }
 	}
 }

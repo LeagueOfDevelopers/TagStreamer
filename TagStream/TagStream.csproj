@@ -149,6 +149,7 @@
     <Compile Include="Infrastructure\IRecentItemProvider.cs" />
     <Compile Include="Infrastructure\ISocialNetworkFeedStream.cs" />
     <Compile Include="Infrastructure\RecentItemProvider.cs" />
+    <Compile Include="Infrastructure\TweetItem.cs" />
     <Compile Include="Infrastructure\TwitterManager.cs" />
     <Compile Include="Models\AdminService.cs" />
     <Compile Include="Models\Credentials.cs" />

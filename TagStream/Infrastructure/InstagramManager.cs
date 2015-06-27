@@ -19,7 +19,7 @@ namespace TagStream.Infrastructure
 				ConfigurationManager.AppSettings["InstagramSecret"],
 				ConfigurationManager.AppSettings["host"]);
 			_tag = tag;
-			_lastUpdateTime = DateTime.Now;
+			_lastUpdateTime = DateTime.MinValue;
 		}
 
 		public async Task<FeedItem> GetLastFeedItemAsync()

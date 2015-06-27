@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using TagStream.Models;
 using Tweetinvi;
-using Tweetinvi.Core.Interfaces;
 using Tweetinvi.Core.Interfaces.WebLogic;
 
 namespace TagStream.Infrastructure
@@ -16,18 +15,17 @@ namespace TagStream.Infrastructure
 		{
 			_tag = tag;
 			_credentials = TwitterCredentials.CreateCredentials(
-				ConfigurationManager.AppSettings["TwitterConsumerKey"],
-				ConfigurationManager.AppSettings["TwitterConsumerSecret"],
 				ConfigurationManager.AppSettings["TwitterAccessKey"],
-				ConfigurationManager.AppSettings["TwitterAccessSecret"]);
-			_minTagId = 0;
+				ConfigurationManager.AppSettings["TwitterAccessSecret"],
+				ConfigurationManager.AppSettings["TwitterConsumerKey"],
+				ConfigurationManager.AppSettings["TwitterConsumerSecret"]);
 		}
 
 		public async Task<FeedItem> GetLastFeedItemAsync()
 		{
 			if (!_tweetsStore.Any())
 			{
-				await Task.Run(() => UpdateStore());
+				await UpdateStore();
 			}
 
 			if (!_tweetsStore.Any())
@@ -54,30 +52,23 @@ namespace TagStream.Infrastructure
 			return feedItem.TwitterItem.CreatedAt;
 		}
 
-		private void UpdateStore()
+		private async Task UpdateStore()
 		{
 			var parameters = Search.CreateTweetSearchParameter(_tag);
-			if (_minTagId == 0)
-			{
-				parameters.Since = DateTime.Now - TimeSpan.FromMinutes(200);
-			}
-			else
-			{
-				parameters.SinceId = _minTagId;
-			}
-
-			var response = TwitterCredentials.ExecuteOperationWithCredentials(_credentials,
-				() => Search.SearchTweets(parameters));
-			_tweetsStore = new Queue<ITweet>(response.OrderBy(tweet => tweet.CreatedAt));
-			if (_tweetsStore.Any())
-			{
-				_minTagId = _tweetsStore.Peek().Id;
-			}
+			parameters.Since = _lastUpdateTime;
+			TwitterCredentials.SetCredentials(_credentials);
+			var rawResponse = await SearchAsync.SearchTweets(parameters);
+			_tweetsStore = new Queue<TweetItem>(
+				rawResponse.OrderBy(tweet => tweet.CreatedAt)
+				.Where(tweet => !tweet.IsRetweet)
+				.Where(tweet => tweet.CreatedAt > _lastUpdateTime)
+				.Select(tweet => new TweetItem(tweet)));
+			_lastUpdateTime = DateTime.Now;
 		}
 
-		private Queue<ITweet> _tweetsStore = new Queue<ITweet>();
+		private DateTime _lastUpdateTime = DateTime.Now - TimeSpan.FromHours(1);
+		private Queue<TweetItem> _tweetsStore = new Queue<TweetItem>();
 		private readonly string _tag;
 		private readonly IOAuthCredentials _credentials;
-		private long _minTagId;
 	}
 }

@@ -38,7 +38,11 @@ namespace TagStream.Models
 			}
 
 			var feedItem = await _recentItemProvider.GetRecentItemAsync();
-			_itemsBuffer.TryAdd(feedItem.ItemId, feedItem);
+			if (feedItem != null)
+			{
+				_itemsBuffer.TryAdd(feedItem.ItemId, feedItem);
+			}
+
 			return feedItem;
 		}
 
