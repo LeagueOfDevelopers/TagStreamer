@@ -19,7 +19,7 @@ namespace TagStream.Infrastructure
 				ConfigurationManager.AppSettings["InstagramSecret"],
 				ConfigurationManager.AppSettings["host"]);
 			_tag = tag;
-			_minTagId = "";
+			_lastUpdateTime = DateTime.Now;
 		}
 
 		public async Task<FeedItem> GetLastFeedItemAsync()
@@ -27,6 +27,10 @@ namespace TagStream.Infrastructure
 			if (!_mediaStore.Any())
 			{
 				await UpdateStoredItems();
+			}
+			if (!_mediaStore.Any())
+			{
+				return null;
 			}
 
 			var media = _mediaStore.Dequeue();
@@ -51,15 +55,15 @@ namespace TagStream.Infrastructure
 		private async Task UpdateStoredItems()
 		{
 			var tag = new Tags(_config);
-			var response = await tag.Recent(_tag, _minTagId, "", null);
-			_minTagId = response.Pagination.NextMaxTagId;
-			var sortedMedias = response.Data.OrderBy(media => media.CreatedTime);
+			var response = await tag.Recent(_tag);
+			var sortedMedias = response.Data.OrderBy(media => media.CreatedTime).Where(media => media.CreatedTime > _lastUpdateTime);
 			_mediaStore = new Queue<Media>(sortedMedias);
+			_lastUpdateTime = DateTime.Now;
 		}
 
-		private Queue<Media> _mediaStore = new Queue<Media>(); 
+		private Queue<Media> _mediaStore = new Queue<Media>();
+		private DateTime _lastUpdateTime;
 		private readonly InstagramConfig _config;
 		private readonly string _tag;
-		private string _minTagId;
 	}
 }
