@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
 	public class TweetItem
 	{

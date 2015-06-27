@@ -1,4 +1,4 @@
-﻿namespace WpfApplication11
+﻿namespace TagStreamDesktop
 {
 	public enum FeedItemType
 	{

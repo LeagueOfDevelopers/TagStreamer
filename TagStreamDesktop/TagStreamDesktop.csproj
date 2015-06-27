@@ -8,8 +8,8 @@
     <ProjectGuid>{53630172-744A-4B84-82C8-5D0B1881E292}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WpfApplication11</RootNamespace>
-    <AssemblyName>WpfApplication11</AssemblyName>
+    <RootNamespace>TagStreamDesktop</RootNamespace>
+    <AssemblyName>TagStreamDesktop</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>

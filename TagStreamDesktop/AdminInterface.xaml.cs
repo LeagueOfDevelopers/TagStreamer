@@ -1,10 +1,10 @@
-﻿using System.Threading.Tasks;
-using InstaSharp.Models;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using InstaSharp.Models;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
     /// <summary>
     /// Логика взаимодействия для AdminInterface.xaml

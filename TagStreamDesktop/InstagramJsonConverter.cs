@@ -1,7 +1,7 @@
 ﻿using System;
 using Newtonsoft.Json;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
 	public class InstagramJsonConverter : JsonConverter
 	{

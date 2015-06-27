@@ -1,7 +1,7 @@
 ﻿using System;
 using InstaSharp.Models;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
 	public class FeedItem
 	{

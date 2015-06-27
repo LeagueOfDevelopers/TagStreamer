@@ -1,10 +1,10 @@
-﻿using InstaSharp.Models;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
+using InstaSharp.Models;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
     /// <summary>
     /// Логика взаимодействия для UserInterface.xaml

@@ -4,7 +4,7 @@ using System.Net;
 using System.Text;
 using Newtonsoft.Json;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
 	internal class Connection
 	{

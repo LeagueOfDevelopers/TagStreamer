@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace WpfApplication11
+namespace TagStreamDesktop
 {
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
