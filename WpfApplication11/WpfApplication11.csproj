@@ -75,6 +75,7 @@
     <Compile Include="FeedItem.cs" />
     <Compile Include="FeedItemType.cs" />
     <Compile Include="InstagramJsonConverter.cs" />
+    <Compile Include="TweetItem.cs" />
     <Compile Include="UserInterface.xaml.cs">
       <DependentUpon>UserInterface.xaml</DependentUpon>
     </Compile>

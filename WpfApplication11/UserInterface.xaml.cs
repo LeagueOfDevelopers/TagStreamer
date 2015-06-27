@@ -12,53 +12,56 @@ namespace WpfApplication11
     enum TypeOfItem { Twit, Inst };
     public partial class UserInterface : Window
     {
-        Thread Refreshing;
+        Thread _refreshing;
+	    private readonly string _connectionKey;
         public UserInterface()
         {
             InitializeComponent();
+	        _connectionKey = Connection.ConnectUser();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            Refreshing = new Thread(() =>
+            _refreshing = new Thread(() =>
             {
-                Thread.Sleep(10000);
                 while (true)
                 {
-                    FeedItem fi = Connection.LoadItem();
+					Thread.Sleep(10000);
+                    FeedItem fi = Connection.LoadItemAsUser(_connectionKey);
                     if(fi!=null)
                         switch (fi.ItemType)
                         {
                             case FeedItemType.Instagram:
-                                Media item = fi.InstagramItem;
+                                var instagramItem = fi.InstagramItem;
                                 Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    Image.Source = new BitmapImage(new Uri(item.Images.StandardResolution.Url));
-                                    UserImage.Source = new BitmapImage(new Uri(item.User.ProfilePicture));
-                                    Name.Text = item.User.Username;
-                                    FullName.Text = item.User.FullName;
-                                    Tags.Text = TagsMaker(item);
-                                    likes.Text = item.Likes.Count.ToString();
-                                    comments.Text = item.Comments.Count.ToString();
+                                    Image.Source = new BitmapImage(new Uri(instagramItem.Images.StandardResolution.Url));
+                                    UserImage.Source = new BitmapImage(new Uri(instagramItem.User.ProfilePicture));
+                                    Name.Text = instagramItem.User.Username;
+                                    FullName.Text = instagramItem.User.FullName;
+                                    Tags.Text = TagsMaker(instagramItem);
+                                    likes.Text = instagramItem.Likes.Count.ToString();
+                                    comments.Text = instagramItem.Comments.Count.ToString();
                                     SetInstaGrid();
                                 }));
                                 break;
                             case FeedItemType.Twitter:
+		                        var twitterItem = fi.TwitterItem;
                                 Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    //TwitPicture.Source = new BitmapImage(new Uri(     ));
-                                    //TwitFullName.Content = 
-                                    //TwitName.Content = 
-                                    //TwitText.Text = 
-                                    //Retweets.Text = 
-                                    //Favorites.Text = 
+									TwitPicture.Source = new BitmapImage(new Uri(twitterItem.AuthorAvatarUrl));
+	                                TwitFullName.Content = twitterItem.AuthorName;
+	                                TwitName.Content = twitterItem.AuthorNick;
+	                                TwitText.Text = twitterItem.Text;
+	                                Retweets.Text = twitterItem.RetweetCount.ToString();
+	                                Favorites.Text = twitterItem.FavouriteCount.ToString();
                                     SetTwitGrid();
                                 }));
                                 break;
                         }
                 }
             });
-            Refreshing.Start();
+            _refreshing.Start();
         }
 
         private string TagsMaker(Media item)
@@ -90,7 +93,7 @@ namespace WpfApplication11
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            Refreshing.Abort();
+            _refreshing.Abort();
         }
 
 

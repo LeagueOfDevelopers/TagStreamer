@@ -88,8 +88,8 @@
                 <ColumnDefinition Width="0.4*"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Следующее" Style="{StaticResource SimpleButtonStyle}" FontSize="25" Click="bNext_Click"/>
-            <Button Content="Одобрить" Grid.Column="2" Style="{StaticResource SimpleButtonStyle}" FontSize="25" Click="bGood_Click"/>
+            <Button x:Name="NextButton" Content="Следующее" Style="{StaticResource SimpleButtonStyle}" FontSize="25" Click="bNext_Click"/>
+            <Button x:Name="ApproveButton" Content="Одобрить" Grid.Column="2" Style="{StaticResource SimpleButtonStyle}" FontSize="25" Click="bGood_Click"/>
         </Grid>
     </Grid>
 </Window>

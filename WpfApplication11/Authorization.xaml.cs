@@ -37,6 +37,7 @@ namespace WpfApplication11
             if (key != null)
             {
                 AdminInterface Window = new AdminInterface(key);
+				Close();
                 Window.Show();
             }
             else { MessageBox.Show("Не удалось войти в систему"); }

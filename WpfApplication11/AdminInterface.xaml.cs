@@ -1,4 +1,5 @@
-﻿using InstaSharp.Models;
+﻿using System.Threading.Tasks;
+using InstaSharp.Models;
 using System;
 using System.Windows;
 using System.Windows.Media.Imaging;
@@ -19,49 +20,57 @@ namespace WpfApplication11
             InitializeComponent();
         }
 
-        private void bNext_Click(object sender, RoutedEventArgs e)
+        private async void bNext_Click(object sender, RoutedEventArgs e)
         {
-            FeedItem fi;
-            bool q;
+            FeedItem fi = null;
+            
 	        if (!string.IsNullOrEmpty(_id))
 	        {
 		        Connection.ProcessedPhoto(_key, _id, false);
 	        }
 
-            do
-            {
-                q = false;
-                fi = Connection.LoadItemAsAdmin(_key);
-                if (fi == null)
-                    q = true;
-            }
-            while (q);
+	        NextButton.IsEnabled = false;
+	        ApproveButton.IsEnabled = false;
+
+	        await Task.Run(() =>
+	        {
+		        do
+		        {
+			        Task.Delay(1000);
+			        fi = Connection.LoadItemAsAdmin(_key);
+		        } while (fi == null);
+	        });
+
+			NextButton.IsEnabled = true;
+			ApproveButton.IsEnabled = true;
+
             _id = fi.ItemId.ToString();
             switch (fi.ItemType)
             {
                 case FeedItemType.Instagram:
-                    Media item = fi.InstagramItem;
+                    var instagramItem = fi.InstagramItem;
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        Image.Source = new BitmapImage(new Uri(item.Images.StandardResolution.Url));
-                        UserImage.Source = new BitmapImage(new Uri(item.User.ProfilePicture));
-                        Name.Text = item.User.Username;
-                        FullName.Text = item.User.FullName;
-                        Tags.Text = TagsMaker(item);
-                        likes.Text = item.Likes.Count.ToString();
-                        comments.Text = item.Comments.Count.ToString();
+                        Image.Source = new BitmapImage(new Uri(instagramItem.Images.StandardResolution.Url));
+                        UserImage.Source = new BitmapImage(new Uri(instagramItem.User.ProfilePicture));
+                        Name.Text = instagramItem.User.Username;
+                        FullName.Text = instagramItem.User.FullName;
+                        Tags.Text = TagsMaker(instagramItem);
+                        likes.Text = instagramItem.Likes.Count.ToString();
+                        comments.Text = instagramItem.Comments.Count.ToString();
                         SetInstaGrid();
                     }));
                     break;
                 case FeedItemType.Twitter:
+		            var twitterItem = fi.TwitterItem;
                     Dispatcher.BeginInvoke(new Action(() =>
                     {
-                        //TwitPicture.Source = new BitmapImage(new Uri(     ));
-                        //TwitFullName.Content = 
-                        //TwitName.Content = 
-                        //TwitText.Text = 
-                        //Retweets.Text = 
-                        //Favorites.Text = 
+						TwitPicture.Source = new BitmapImage(new Uri(twitterItem.AuthorAvatarUrl));
+						TwitFullName.Content = twitterItem.AuthorName;
+						TwitName.Content = twitterItem.AuthorNick;
+						TwitText.Text = twitterItem.Text;
+						Retweets.Text = twitterItem.RetweetCount.ToString();
+						Favorites.Text = twitterItem.FavouriteCount.ToString();
                         SetTwitGrid();
                     }));
                     break;
@@ -72,7 +81,7 @@ namespace WpfApplication11
         {
             string q = "";
             foreach (string x in item.Tags)
-                q = String.Concat(q, x);
+                q = String.Concat(q, "#", x);
             return q;
         }
 

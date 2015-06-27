@@ -10,11 +10,28 @@ namespace WpfApplication11
 	{
 		private static string site = "tagstream.azurewebsites.net/api";
 
-		public static FeedItem LoadItem()
+		public static string ConnectUser()
 		{
 			try
 			{
-				var req = (HttpWebRequest) WebRequest.Create(String.Format("http://{0}", site));
+				var req = (HttpWebRequest)WebRequest.Create(string.Format("http://{0}/User/Connect", site));
+				req.Method = "GET";
+				var resp = (HttpWebResponse)req.GetResponse();
+				var sr = new StreamReader(resp.GetResponseStream(), Encoding.UTF8);
+				return sr.ReadToEnd().Trim('\"');
+			}
+			catch
+			{
+				return null;
+			}
+		}
+
+		public static FeedItem LoadItemAsUser(string connectionKey)
+		{
+			try
+			{
+				var req = (HttpWebRequest)WebRequest.Create(String.Format("http://{1}/User/NewPhoto?connectionToken={0}", connectionKey, site));
+				req.Method = "GET";
 				var resp = (HttpWebResponse) req.GetResponse();
 				var sr = new StreamReader(resp.GetResponseStream(), Encoding.UTF8);
 				var fi = JsonConvert.DeserializeObject<FeedItem>(sr.ReadToEnd());

@@ -11,6 +11,6 @@ namespace WpfApplication11
 
 		public Media InstagramItem { get; set; }
 
-		// here is gonna be twitter item
+		public TweetItem TwitterItem { get; set; }
 	}
 }
