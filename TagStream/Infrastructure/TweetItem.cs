@@ -1,5 +1,9 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Tweetinvi.Core.Interfaces;
+using Tweetinvi.Core.Interfaces.Models.Entities;
 
 namespace TagStream.Infrastructure
 {
@@ -18,6 +22,7 @@ namespace TagStream.Infrastructure
 			FavouriteCount = tweet.FavouriteCount;
 			RetweetCount = tweet.RetweetCount;
 			Text = tweet.Text;
+			Medias = tweet.Media.Where(media => media.MediaType == "photo").Select(media => media.MediaURL).ToArray();
 		}
 
 		public DateTime CreatedAt { get; set; }
@@ -33,5 +38,7 @@ namespace TagStream.Infrastructure
 		public string AuthorName { get; set; }
 
 		public string AuthorAvatarUrl { get; set; }
+
+		public string[] Medias { get; set; }
 	}
 }

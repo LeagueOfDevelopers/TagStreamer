@@ -17,5 +17,7 @@ namespace WpfApplication11
 		public string AuthorName { get; set; }
 
 		public string AuthorAvatarUrl { get; set; }
+
+		public string[] Medias { get; set; }
 	}
 }
