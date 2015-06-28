@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Linq;
 using Tweetinvi.Core.Interfaces;
-using Tweetinvi.Core.Interfaces.Models.Entities;
 
 namespace TagStream.Infrastructure
 {
